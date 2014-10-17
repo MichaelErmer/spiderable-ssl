@@ -3,6 +3,8 @@ var child_process = Npm.require('child_process');
 var querystring = Npm.require('querystring');
 var urlParser = Npm.require('url');
 
+Spiderable = {};
+
 // list of bot user agents that we want to serve statically, but do
 // not obey the _escaped_fragment_ protocol. The page is served
 // statically to any client whos user agent matches any of these
@@ -102,7 +104,7 @@ WebApp.connectHandlers.use(function (req, res, next) {
     child_process.execFile(
       '/bin/bash',
       ['-c',
-       ("exec phantomjs --ignore-ssl-errors=yes --load-images=no /dev/stdin <<'END'\n" +
+       ("exec phantomjs --ssl-protocol=tlsv1 --load-images=no /dev/stdin <<'END'\n" +
         phantomScript + "END\n")],
       {timeout: REQUEST_TIMEOUT, maxBuffer: MAX_BUFFER},
       function (error, stdout, stderr) {
