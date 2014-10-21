@@ -102,7 +102,7 @@ WebApp.connectHandlers.use(function (req, res, next) {
     child_process.execFile(
       '/bin/bash',
       ['-c',
-       ("exec phantomjs --ignore-ssl-errors=true --load-images=no /dev/stdin <<'END'\n" +
+       ("exec phantomjs --ssl-protocol=TLSv1 --ignore-ssl-errors=true --load-images=no /dev/stdin <<'END'\n" +
         phantomScript + "END\n")],
       {timeout: REQUEST_TIMEOUT, maxBuffer: MAX_BUFFER},
       function (error, stdout, stderr) {
