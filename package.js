@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Meteor Spiderable Package with --ignore-ssl-errors=true",
-  version: "0.1.7",
-  git: 'https://github.com/Gentlenode/spiderable-ssl'
+  version: "0.0.2",
+  git: 'https://github.com/MichaelErmer/spiderable-ssl.git'
 });
 
 Package.on_use(function (api) {

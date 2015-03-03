@@ -15,6 +15,8 @@ var urlParser = Npm.require('url');
 Spiderable.userAgentRegExps = [
     /^facebookexternalhit/i, /^linkedinbot/i, /^twitterbot/i];
 
+Spiderable.skipRoutes = Meteor.settings.spiderable.skipRoutes || [];
+
 // how long to let phantomjs run before we kill it
 var REQUEST_TIMEOUT = 15*1000;
 // maximum size of result HTML. node's default is 200k which is too
@@ -53,9 +55,13 @@ WebApp.connectHandlers.use(function (req, res, next) {
   // _escaped_fragment_ URLs. Since then, "#!" URLs have gone out of style, but
   // the <meta name="fragment" content="!"> (see spiderable.html) approach also
   // described in the spec is still common and used by several crawlers.
-  if (/\?.*_escaped_fragment_=/.test(req.url) ||
+
+  if ((/\?.*_escaped_fragment_=/.test(req.url) ||
       _.any(Spiderable.userAgentRegExps, function (re) {
-        return re.test(req.headers['user-agent']); })) {
+        return re.test(req.headers['user-agent']); })) &&
+      !_.any(Spiderable.skipRoutes, function (r) {
+        return (req.url.indexOf(r)>-1);
+      })) {
 
     var url = Spiderable._urlForPhantom(Meteor.absoluteUrl(), req.url);
 
