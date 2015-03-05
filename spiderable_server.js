@@ -15,8 +15,10 @@ var urlParser = Npm.require('url');
 Spiderable.userAgentRegExps = [
     /^facebookexternalhit/i, /^linkedinbot/i, /^twitterbot/i];
 
-Spiderable.skipRoutes = Meteor.settings.spiderable.skipRoutes || [];
-
+Spiderable.skipRoutes = [];
+if ( Meteor.settings && Meteor.settings.spiderable && Meteor.settings.spiderable.skipRoutes && Meteor.settings.spiderable.skipRoutes.length) {
+  Spiderable.skipRoutes = Meteor.settings.spiderable.skipRoutes;
+}
 // how long to let phantomjs run before we kill it
 var REQUEST_TIMEOUT = 15*1000;
 // maximum size of result HTML. node's default is 200k which is too
